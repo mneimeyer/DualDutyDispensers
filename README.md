@@ -67,6 +67,12 @@ See the config files for full recipes.
 
 This project is licensed under the MIT License. See [LICENSE](./LICENSE) for details.
 
+## 🙏 A Friendly Request
+
+This project is licensed under the MIT license, so you're free to use, modify, and share it — including in your own projects.
+
+However, if you improve the plugin or add new features, I’d really appreciate it if you shared them back via a pull request or fork link. While not required, contributions help everyone benefit.
+
 ## 🧑‍💻 Contributing
 
 Pull requests welcome! Please read [CONTRIBUTING.md](./CONTRIBUTING.md) first.
