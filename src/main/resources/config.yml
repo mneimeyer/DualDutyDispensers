@@ -1,0 +1,34 @@
+# Master Configuration for Dual Duty Dispensers
+# Enable or disable entire block types
+
+blocks:
+  tree-farm:
+    enabled: true
+    recipe-enabled: true
+  compressor:
+    enabled: true
+    recipe-enabled: true
+  decompressor:
+    enabled: true
+    recipe-enabled: true
+  siphon:
+    enabled: true
+    recipe-enabled: true
+  ender-sender:
+    enabled: true
+    recipe-enabled: true
+  ender-receiver:
+    enabled: true
+    recipe-enabled: true
+  block-breaker:
+    enabled: true
+    recipe-enabled: true
+  murder-block:
+    enabled: true
+    recipe-enabled: true
+  redstone-clock:
+    enabled: true
+    recipe-enabled: true
+
+# Global settings
+debug: false

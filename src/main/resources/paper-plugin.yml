@@ -1,0 +1,15 @@
+name: DualDutyDispensers
+version: '${version}'
+main: org.neimeyer.dualdutydispensers.DualDutyDispensers
+api-version: '1.21'
+description: Multi-purpose dispenser blocks with specialized functions
+authors: [ MNeimeyer ]
+website: https://github.com/mneimeyer/DualDutyDispensers
+
+permissions:
+  dualdutydispensers.use:
+    description: Allows player to use dual duty dispensers
+    default: true
+  dualdutydispensers.craft:
+    description: Allows player to craft dual duty dispensers
+    default: true

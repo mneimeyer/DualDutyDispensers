@@ -1,0 +1,29 @@
+# Tree Farm Configuration
+name: Tree Farm
+lore: Mother Nature's best kept secret.
+custom-model-data: 44401
+
+# Growth mechanics - consulted on every redstone tick
+base-growth-chance: 5.0       # The base percentage chance to grow (0-100%)
+bone-meal-bonus: 20.0         # Additional percentage when bone meal is present (0-100%)
+                              # The final chance is base plus bone meal (can exceed 100%)
+
+# Behavior settings
+require-soil: true            # Whether soil is required for growth
+consume-bone-meal: true       # Whether bone meal is consumed when used
+
+recipe:
+  # Top Row
+  item0: redstone_block
+  item1: diamond_axe
+  item2: redstone_block
+
+  # Middle Row
+  item3: diamond_axe
+  item4: dispenser
+  item5: diamond_axe
+
+  # Bottom Row
+  item6: redstone_block
+  item7: diamond_axe
+  item8: redstone_block
