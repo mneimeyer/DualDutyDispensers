@@ -113,10 +113,4 @@ public class SoilHelper {
         return REQUIRES_BONEMEAL.contains(saplingType);
     }
     
-    /**
-     * Get all valid soil types for a sapling/fungus
-     */
-    public static Set<Material> getValidSoils(Material saplingType) {
-        return SAPLING_SOIL_COMPATIBILITY.getOrDefault(saplingType, Set.of());
-    }
 }
