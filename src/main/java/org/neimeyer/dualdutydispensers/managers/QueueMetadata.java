@@ -35,13 +35,8 @@ public class QueueMetadata {
      * @return true if the block was found and removed
      */
     public boolean removeBlock(String blockLocation) {
-        boolean removed = false;
-        if (leftSideBlocks.remove(blockLocation)) {
-            removed = true;
-        }
-        if (rightSideBlocks.remove(blockLocation)) {
-            removed = true;
-        }
+        boolean removed = leftSideBlocks.remove(blockLocation);
+        removed |= rightSideBlocks.remove(blockLocation);
         return removed;
     }
 

@@ -147,8 +147,7 @@ public class BlockManager {
             }
             
             List<String> locationData = java.nio.file.Files.readAllLines(locationsFile.toPath());
-            int loadedCount = 0;
-            
+
             for (String line : locationData) {
                 String[] parts = line.split(",");
                 if (parts.length != 5) continue;
@@ -181,7 +180,6 @@ public class BlockManager {
                     CustomBlock customBlock = createBlock(loc, blockKey);
                     if (customBlock != null) {
                         customBlock.loadData();
-                        loadedCount++;
                     }
                     
                 } catch (Exception e) {

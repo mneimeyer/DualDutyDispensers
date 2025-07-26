@@ -4,8 +4,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.Location;
 import org.neimeyer.dualdutydispensers.blocks.base.EnderBaseBlock;
 import org.neimeyer.dualdutydispensers.managers.EnderQueueManager;
-import org.bukkit.inventory.Inventory;
-import org.neimeyer.dualdutydispensers.DualDutyDispensers;
 import org.bukkit.block.Block;
 
 public class EnderSenderBlock extends EnderBaseBlock {
@@ -32,14 +30,6 @@ public class EnderSenderBlock extends EnderBaseBlock {
         }
         if (inventory == null) {
             return;
-        }
-
-        // Log entire inventory contents, slot by slot
-        StringBuilder contents = new StringBuilder();
-        for (int i = 0; i < inventory.getSize(); i++) {
-            org.bukkit.inventory.ItemStack item = inventory.getItem(i);
-            contents.append(item == null ? "-" : item.getType() + "x" + item.getAmount());
-            if (i < inventory.getSize() - 1) contents.append(", ");
         }
 
         // Now proceed with the usual send logic

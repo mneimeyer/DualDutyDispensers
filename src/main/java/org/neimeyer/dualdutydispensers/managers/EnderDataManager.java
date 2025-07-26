@@ -36,85 +36,22 @@ public class EnderDataManager {
     }
 
     /**
-     * Save block's queue assignment
-     */
-    public void saveBlockQueueAssignment(String blockLocation, String queueId) {
-        File assignmentsFile = new File(dataDir, "block-assignments.txt");
-
-        try {
-            Map<String, String> allAssignments = loadAllBlockQueueAssignments();
-
-            if (queueId == null) {
-                allAssignments.remove(blockLocation);
-            } else {
-                allAssignments.put(blockLocation, queueId);
-            }
-
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter(assignmentsFile))) {
-                for (Map.Entry<String, String> entry : allAssignments.entrySet()) {
-                    writer.write(entry.getKey() + ":" + entry.getValue());
-                    writer.newLine();
-                }
-            }
-
-        } catch (IOException e) {
-            plugin.getLogger().log(Level.WARNING, "Failed to save queue assignment for " + blockLocation, e);
-        }
-    }
-
-    /**
-     * Load block's queue assignment
-     */
-    public String loadBlockQueueAssignment(String blockLocation) {
-        Map<String, String> allAssignments = loadAllBlockQueueAssignments();
-        return allAssignments.get(blockLocation);
-    }
-
-    /**
-     * Load all block queue assignments
-     */
-    private Map<String, String> loadAllBlockQueueAssignments() {
-        Map<String, String> assignments = new HashMap<>();
-        File assignmentsFile = new File(dataDir, "block-assignments.txt");
-
-        if (!assignmentsFile.exists()) {
-            return assignments;
-        }
-
-        try (BufferedReader reader = new BufferedReader(new FileReader(assignmentsFile))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                if (line.trim().isEmpty()) continue;
-
-                String[] parts = line.split(":", 2);
-                if (parts.length == 2) {
-                    assignments.put(parts[0], parts[1]);
-                }
-            }
-        } catch (IOException e) {
-            plugin.getLogger().log(Level.WARNING, "Failed to load block queue assignments", e);
-        }
-
-        return assignments;
-    }
-
-    /**
-     * Save queue metadata 
+     * Save queue metadata
      */
     public void saveQueueMetadata(Map<String, QueueMetadata> metadataMap) {
         File metadataFile = new File(dataDir, "queue-metadata.txt");
-        
+
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(metadataFile))) {
             for (QueueMetadata metadata : metadataMap.values()) {
                 writer.write("QUEUE:" + metadata.getQueueId());
                 writer.newLine();
-                
+
                 // Save all blocks as generic entries since we can't access left/right separately
                 for (String blockLocation : metadata.getAllBlocks()) {
                     writer.write("BLOCK:" + blockLocation);
                     writer.newLine();
                 }
-                
+
                 writer.write("END");
                 writer.newLine();
             }
@@ -244,12 +181,6 @@ public class EnderDataManager {
         }
     }
 
-    /**
-     * Remove all data for a block (when it's broken)
-     */
-    public void removeBlockData(String blockLocation) {
-        saveBlockQueueAssignment(blockLocation, null);
-    }
 
     /**
      * Generate queue file name for a queue ID
