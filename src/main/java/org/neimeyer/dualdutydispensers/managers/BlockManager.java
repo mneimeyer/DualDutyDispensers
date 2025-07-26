@@ -4,8 +4,12 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.neimeyer.dualdutydispensers.DualDutyDispensers;
+import org.neimeyer.dualdutydispensers.blocks.EnderReceiverBlock;
+import org.neimeyer.dualdutydispensers.blocks.EnderSenderBlock;
 import org.neimeyer.dualdutydispensers.blocks.RedstoneClockBlock;
 import org.neimeyer.dualdutydispensers.blocks.TreeFarmBlock;
+import org.neimeyer.dualdutydispensers.blocks.WarpReceiverBlock;
+import org.neimeyer.dualdutydispensers.blocks.WarpSenderBlock;
 import org.neimeyer.dualdutydispensers.blocks.base.CustomBlock;
 
 import java.io.File;
@@ -46,6 +50,10 @@ public class BlockManager {
         CustomBlock block = switch (blockKey) {
             case "tree-farm" -> new TreeFarmBlock(location);
             case "redstone-clock" -> new RedstoneClockBlock(location);
+            case "ender-sender" -> new EnderSenderBlock(location);
+            case "ender-receiver" -> new EnderReceiverBlock(location);
+            case "warp-sender" -> new WarpSenderBlock(location);
+            case "warp-receiver" -> new WarpReceiverBlock(location);
             default -> null; // Add more block types here as they're implemented
         };
         
@@ -92,8 +100,7 @@ public class BlockManager {
             // Save block locations to a file
             File locationsFile = new File(dataDir, "locations.txt");
             java.nio.file.Files.write(locationsFile.toPath(), locationData);
-            plugin.getLogger().info("Saved " + blocks.size() + " custom blocks");
-            
+
         } catch (Exception e) {
             plugin.getLogger().log(Level.SEVERE, "Failed to save blocks", e);
         }
@@ -136,7 +143,6 @@ public class BlockManager {
         try {
             File locationsFile = new File(plugin.getDataFolder(), "blocks/locations.txt");
             if (!locationsFile.exists()) {
-                plugin.getLogger().info("No saved blocks found");
                 return;
             }
             
@@ -183,8 +189,6 @@ public class BlockManager {
                 }
             }
             
-            plugin.getLogger().info("Loaded " + loadedCount + " custom blocks");
-            
         } catch (Exception e) {
             plugin.getLogger().log(Level.SEVERE, "Failed to load blocks", e);
         }
@@ -192,8 +196,8 @@ public class BlockManager {
     
     private Material getExpectedBlockType(String blockKey) {
         return switch (blockKey) {
-            case "tree-farm", "ender-receiver", "ender-sender", "compressor", 
-                 "decompressor", "siphon", "block-breaker", "murder-block" -> Material.DISPENSER;
+            case "tree-farm", "ender-receiver", "ender-sender", "warp-receiver", "warp-sender",
+                 "compressor", "decompressor", "siphon", "block-breaker", "murder-block" -> Material.DISPENSER;
             case "redstone-clock" -> Material.OBSERVER;
             default -> Material.AIR;
         };

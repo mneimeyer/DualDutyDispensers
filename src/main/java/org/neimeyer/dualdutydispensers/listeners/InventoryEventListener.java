@@ -22,6 +22,7 @@ public class InventoryEventListener implements Listener {
     }
     
     @EventHandler
+    @SuppressWarnings("unused") // Called by Bukkit event system
     public void onInventoryClick(InventoryClickEvent event) {
         // Handle clicks in custom dispenser inventories
         if (event.getView().getTopInventory().getType() == InventoryType.DISPENSER) {
@@ -159,6 +160,7 @@ public class InventoryEventListener implements Listener {
     }
     
     @EventHandler
+    @SuppressWarnings("unused") // Called by Bukkit event system
     public void onInventoryMoveItem(InventoryMoveItemEvent event) {
         // Handle hopper input/output for custom dispensers
         if (event.getDestination().getType() == InventoryType.DISPENSER) {

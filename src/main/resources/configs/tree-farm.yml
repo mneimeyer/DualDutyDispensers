@@ -1,7 +1,7 @@
 # Tree Farm Configuration
 name: Tree Farm
-lore: Mother Nature's best kept secret.
 custom-model-data: 44401
+lore: Mother Nature's best kept secret.
 
 # Growth mechanics - consulted on every redstone tick
 base-growth-chance: 5.0       # The base percentage chance to grow (0-100%)

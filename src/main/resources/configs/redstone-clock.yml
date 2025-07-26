@@ -1,8 +1,9 @@
 # Redstone Clock Configuration
-tick-interval: 8                # Pulse every 8 ticks (0.4 seconds)
 name: Redstone Clock
-lore: You hear soft ticking from inside.
 custom-model-data: 44499
+lore: You hear soft ticking from inside.
+
+tick-interval: 8                # Pulse every 8 ticks (0.4 seconds)
 
 recipe:
   # Top Row

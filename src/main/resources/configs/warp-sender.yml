@@ -1,0 +1,24 @@
+# Warp Sender Configuration
+name: Warp Sender
+custom-model-data: 44404
+lore:
+  - An evolved Ender Sender.
+  - Can be paired to multiple receivers.
+
+# Use "ender-sender" where you want that to be used.
+# The default is the center of the 3x3 crafting grid
+recipe:
+  # Top Row
+  item0: echo_shard
+  item1: shulker_box
+  item2: echo_shard
+
+  # Middle Row
+  item3: shulker_box
+  item4: ender-sender
+  item5: shulker_box
+
+  # Bottom Row
+  item6: echo_shard
+  item7: shulker_box
+  item8: echo_shard

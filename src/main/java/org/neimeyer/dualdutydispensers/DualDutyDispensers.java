@@ -6,9 +6,11 @@ import org.bukkit.scheduler.BukkitTask;
 import org.neimeyer.dualdutydispensers.blocks.base.CustomBlock;
 import org.neimeyer.dualdutydispensers.config.ConfigManager;
 import org.neimeyer.dualdutydispensers.listeners.BlockEventListener;
+import org.neimeyer.dualdutydispensers.listeners.CraftingEventListener;
 import org.neimeyer.dualdutydispensers.listeners.InventoryEventListener;
 import org.neimeyer.dualdutydispensers.managers.BlockManager;
-import org.neimeyer.dualdutydispensers.recipes.RecipeManager;
+import org.neimeyer.dualdutydispensers.managers.EnderQueueManager;
+import org.neimeyer.dualdutydispensers.managers.RecipeManager;
 
 public final class DualDutyDispensers extends JavaPlugin {
     private static DualDutyDispensers instance;
@@ -33,6 +35,7 @@ public final class DualDutyDispensers extends JavaPlugin {
         // Register event listeners
         getServer().getPluginManager().registerEvents(new BlockEventListener(this), this);
         getServer().getPluginManager().registerEvents(new InventoryEventListener(this), this);
+        getServer().getPluginManager().registerEvents(new CraftingEventListener(this), this);
         
         // Register recipes
         recipeManager.registerAllRecipes();
@@ -42,6 +45,9 @@ public final class DualDutyDispensers extends JavaPlugin {
         
         // Start the block ticker task
         startBlockTicker();
+        
+        // Initialize EnderQueueManager
+        EnderQueueManager.getInstance().initialize();
         
         getLogger().info("DualDutyDispensers has been enabled!");
     }
@@ -58,6 +64,9 @@ public final class DualDutyDispensers extends JavaPlugin {
             blockTicker.cancel();
             blockTicker = null;
         }
+        
+        // Save ender queue data
+        EnderQueueManager.getInstance().saveAllQueues();
         
         getLogger().info("DualDutyDispensers has been disabled!");
         instance = null;

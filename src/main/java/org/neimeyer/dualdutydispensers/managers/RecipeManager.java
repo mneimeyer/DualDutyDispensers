@@ -1,8 +1,10 @@
-package org.neimeyer.dualdutydispensers.recipes;
+package org.neimeyer.dualdutydispensers.managers;
 
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.neimeyer.dualdutydispensers.DualDutyDispensers;
 import org.neimeyer.dualdutydispensers.config.BlockConfig;
 
@@ -16,10 +18,14 @@ public class RecipeManager {
     }
     
     public void registerAllRecipes() {
+        // Register normal recipes with proper base materials
         registerBlockRecipe("tree-farm", Material.DISPENSER);
         registerBlockRecipe("redstone-clock", Material.OBSERVER);
+        registerBlockRecipe("ender-sender", Material.DISPENSER);
+        registerBlockRecipe("ender-receiver", Material.DISPENSER);
         
-        // TODO: Add other recipes as blocks are implemented
+        // Register special Warp recipes that use custom items as ingredients
+        registerWarpRecipes();
     }
     
     private void registerBlockRecipe(String blockKey, Material baseMaterial) {
@@ -66,5 +72,58 @@ public class RecipeManager {
         } catch (Exception e) {
             plugin.getLogger().warning("Failed to register recipe for " + blockKey + ": " + e.getMessage());
         }
+    }
+    
+    private void registerWarpRecipes() {
+        // Note: Warp recipes are handled by CraftingEventListener since they use custom items
+        plugin.getLogger().info("Warp recipes handled by custom crafting events");
+    }
+    
+    /**
+     * Check if an ItemStack is one of our custom blocks
+     */
+    @SuppressWarnings("deprecation")
+    public boolean isCustomBlock(ItemStack item) {
+        if (item == null || !item.hasItemMeta()) {
+            return false;
+        }
+        
+        ItemMeta meta = item.getItemMeta();
+        if (!meta.hasCustomModelData()) {
+            return false;
+        }
+        
+        int customModelData = meta.getCustomModelData();
+        
+        // Check against all our block types
+        for (String blockKey : plugin.getConfigManager().getBlockKeys()) {
+            BlockConfig config = plugin.getConfigManager().getBlockConfig(blockKey);
+            if (config != null && config.getCustomModelData() == customModelData) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+    
+    /**
+     * Get the block key for a custom item (used by CraftingEventListener)
+     */
+    @SuppressWarnings("deprecation")
+    public String getBlockKeyFromItem(ItemStack item) {
+        if (!isCustomBlock(item)) {
+            return null;
+        }
+        
+        int customModelData = item.getItemMeta().getCustomModelData();
+        
+        for (String blockKey : plugin.getConfigManager().getBlockKeys()) {
+            BlockConfig config = plugin.getConfigManager().getBlockConfig(blockKey);
+            if (config != null && config.getCustomModelData() == customModelData) {
+                return blockKey;
+            }
+        }
+        
+        return null;
     }
 }

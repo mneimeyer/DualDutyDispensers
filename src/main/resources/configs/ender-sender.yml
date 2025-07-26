@@ -1,0 +1,20 @@
+# Ender Sender Configuration
+name: Ender Sender
+custom-model-data: 44402
+lore: A tear in space swallows all around it.
+
+recipe:
+  # Top Row
+  item0: obsidian
+  item1: ender_eye
+  item2: obsidian
+
+  # Middle Row
+  item3: hopper
+  item4: dispenser
+  item5: hopper
+
+  # Bottom Row
+  item6: obsidian
+  item7: ender_eye
+  item8: obsidian

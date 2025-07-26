@@ -3,14 +3,24 @@
 ### 0. Blocks to Make
 Each block uses a standard Dispenser block with the CustomModelData set.
 
+#### Actors:
+- **Siphon:** Dispenses filled containers when adjacent to a source block of fluid or a full cauldron and the Siphon contains empty buckets or bottles. Can emit Lava, Water or Powder Snow buckets or Water Bottles.
+- **Block Breaker:** Mirror Sheep Shearing, use tools in inventory to break block in front of face. Enchantment support planned.
+- **Murder Block:** Also mirrors Sheep Shearing, Use weapons in inventory to attack mobs in front of the block. Enchantment support planned.
+
+#### Transfers:
+- **Ender Sender:** Take Items from reality and queue them for a paired receiver.
+- **Ender Receiver:** Take Items from its queue and inject them into reality.
+- **Warp Sender:** An evolved Ender Sender. It can be paired to multiple Ender Receivers.
+- **Warp Receiver:** An evolved Ender Receiver. It can be paired to multiple Ender Senders.
+
+#### Transformers:
 - **Tree Farm:** One Block Shop for Log Production. Includes drops from leaves or the leaves themselves. Enchantment support planned.
 - **Compressor:** Convert Many into One (Ingots to Blocks, etc.)
 - **Decompressor:** Convert One into Many (Blocks to Ingots, etc.)
-- **Siphon:** Dispenses filled buckets when adjacent to source fluid or full cauldron and contains empty buckets. Can emit Lava, Water or Powder Snow buckets or Water Bottles.
-- **Ender Sender:** Take Items from reality and queue them in a data structure of some sort in memory/on disk. Paired one to one with Receiver by Use-Clicking Receiver on placed Sender. Ensure queue is written to permanent storage when the unload event runs and is read from when the load event runs.
-- **Ender Receiver:** Take Items from the queue and inject them into reality
-- **Block Breaker:** Mirror Sheep Shearing, use tools in inventory to break block in front of face. Enchantment support planned.
-- **Murder Block:** Also mirrors Sheep Shearing, Use weapons in inventory to attack mobs in front of the block. Enchantment support planned.
+- **Grinder:** Reduce input block to "lower" form. (Stone to Cobblestone, etc)
+
+#### Utility:
 - **Redstone Clock:** Bonus block! Based on Observer Block and not Dispenser.
 
 ---
@@ -18,9 +28,44 @@ Each block uses a standard Dispenser block with the CustomModelData set.
 ### 1. Custom Recipes
 **Basic Recipe Format on 3x3 crafting grid:**  
 Row 1: Block, Item, Block  
-Row 2: Item, Dispenser, Item  
+Row 2: Item, BuiltOn, Item  
 Row 3: Block, Item, Block
 
+The BuiltOn block in the center is always a dispenser unless noted below.
+
+#### Actors:
+- **Siphon:**  
+  Item: Empty Buckets  
+  Block: Redstone Block
+
+- **Block Breaker:**  
+  Item: Diamond Pickaxes  
+  Block: Redstone Block
+
+- **Murder Block:**  
+  Item: Diamond Sword  
+  Block: Redstone Block
+
+#### Transfers:
+- **Ender Sender:**  
+  Item: Eye of Ender (North/South), Hopper (East/West)  
+  Block: Obsidian
+
+- **Ender Receiver:**  
+  Item: Eye of Ender (North/South), Dropper (East/West)  
+  Block: Obsidian
+
+- **Warp Sender:**
+  Center: Ender Sender  
+  Item: Shulker Chest (any color)  
+  Block: Echo Shards
+
+- **Warp Receiver:**
+  Center: Ender Receiver  
+  Item: Shulker Chest (any color)  
+  Block: Echo Shards
+
+#### Transformers:
 - **Tree Farm:**  
   Item: Diamond Axes  
   Block: Redstone Block
@@ -33,42 +78,43 @@ Row 3: Block, Item, Block
   Item: Sticky Piston  
   Block: Redstone Block
 
-- **Siphon:**  
-  Item: Empty Buckets  
-  Block: Redstone Block
+- **Grinder:**  
+  Item: Flint  
+  Block: Stone Bricks
 
-- **Ender Sender:**  
-  Item: Eye of Ender (North/South), Hopper (East/West)  
-  Block: Obsidian
-
-- **Ender Receiver:**  
-  Item: Eye of Ender (North/South), Dropper (East/West)  
-  Block: Obsidian
-
-- **Block Breaker:**  
-  Item: Diamond Pickaxes  
-  Block: Redstone Block
-
-- **Murder Block:**  
-  Item: Diamond Sword  
-  Block: Redstone Block
-
+#### Utility:
 - **Redstone Clock:**  
+  Center: Observer  
   Item: Repeater (East/West), Comparator (North/South)  
   Block: Redstone Block
 
 ---
 
 ### 2. On Redstone Trigger
-- **Tree Farm:** Attempt to grow a virtual tree if inventory contains soil, saplings, and optionally shears. Emit results through face. Trees that support 2x2 planting will attempt this if four saplings available and four soil available. On success 4 saplings are removed instead of just one and drops quantities as appropriate. If shears are present leaf blocks are dropped instead of loot. If sapling growth would convert the soil under it in nature then soil slot is converted as well.
-- **Compressor:** Check inventory for enough blocks to convert checking against the list of recipes. Emit result of first match through face. If no items can be compressed, emit the first uncompressable item through the face.
-- **Decompressor:** Check inventory for a block to convert from the list of recipes. Emit results of first match through face. If no items can be decompressed, emit the first undecompressable result through the face.
-- **Siphon:** Fill empty buckets or empty bottles in inventory if possible from the adjacent source block or full cauldron. Remove source block or empty cauldron. Emit through face.
-- **Ender Sender:** Remove item from inventory, add to queue for receiver. Emit nothing. If unpaired then do nothing.
-- **Ender Receiver:** Check queue from sender, receive one and emit one item through face.
-- **Block Breaker:** Uses `breakNaturally(tool)` with the first available tool from inventory (following the pattern used by Sheep Shearing Dispenser), applying enchantments (Fortune, Silk Touch, Unbreaking) and vanilla logic. Emit nothing from the dispenser; drops handled by environment.
-- **Murder Block:** Mirror sheep shearing. Emit nothing from the dispenser. Drops handled by environment.
-- **Redstone Clock:** Generates a Redstone pulse every four ticks (configurable) regardless of whether something would ordinarily be observed.
+
+#### Actors
+
+- **Siphon:** Attempt to pull fluid source blocks (water or lava) from directly in front and fill containers from inventory.
+- **Block Breaker:** Breaks the block in front as if mined using items in the internal inventory.
+- **Murder Block:** Attacks entities directly in front with weapons contained in the internal inventory.
+
+#### Transfers
+
+- **Ender Sender:** Transfers items placed inside to its paired Ender Receiver(s), even across dimensions. Only valid pairs work.
+- **Ender Receiver:** Receives items from its paired Ender Sender(s).  
+- **Warp Sender:** Transfers items to multiple paired Receivers at once.
+- **Warp Receiver:** Receives items from any number of paired Senders.
+
+#### Transformers
+
+- **Tree Farm:** Attempts to plant saplings and trigger tree growth (if conditions are right). 2x2 Trees are supported but require four saplings and four soil.
+- **Compressor:** Compresses compatible blocks (e.g., iron ingots to iron blocks) using configurable recipes which, by default, mirror standard Minecraft recipes.
+- **Decompressor:** Decompresses compatible blocks into base items (e.g., iron blocks to iron ingots).
+- **Grinder:** Pulverizes items into smaller components (e.g., cobblestone to gravel, gravel to flint).
+
+#### Utility
+
+- **Redstone Clock:** Emits an adjustable redstone pulse at set intervals, providing a timer-based signal.
 
 ---
 
@@ -76,29 +122,40 @@ Row 3: Block, Item, Block
 - All blocks drop themselves.
 - All blocks drop their inventory.
 - **Ender Sender/Receiver:** If either end of a block pair is broken the remaining items in the queue are dropped as if they were contained in the inventory of the block being broken.
+- **Warp Sender/Receiver:** If the Warp end of a net is broken then drop the remaining items in the queue as if they were contained in the inventory of the block being broken. If one of the Ender ends of a net is broken but more Ender ends remain do nothing but update the tracking.
 
 ---
 
 ### 4. Inventory Locking (for UI/user interaction)
+
+#### Actors
+- **Siphon:** No locking, but only allow empty buckets or empty bottles.
+- **Block Breaker:** Not locked, but only allow tools (config-based whitelist?).
+- **Murder Block:** Not locked, but only allow weapons (config-based whitelist?).
+
+#### Transfers
+- **Warp/Ender Sender:** No locking of local inventory.
+- **Warp/Ender Receiver:** Fully lock inventory insertion. Can only pull (and emit) a single item from queue. If unable to emit, then store in inventory. Stored items can be removed manually.
+
+#### Transformers
 - **Tree Farm:** Lock all slots except allow sapling in "north," dirt/soils in "south," and shears in the middle.
 - **Compressor:** No locking.
 - **Decompressor:** No locking.
-- **Siphon:** No locking, but only allow empty buckets or empty bottles.
-- **Ender Sender:** No locking of local inventory. Limits on queue. If queue is empty, one of any item can be added. If queue contains items but less than one full stack (64, 16 or 1 as appropriate), increment quantity and remove from local inventory.
-- **Ender Receiver:** Fully lock inventory. Can only pull (and emit) a single item from queue. If unable to emit, then store in inventory.
-- **Block Breaker:** Not locked, but only allow tools (config-based whitelist?).
-- **Murder Block:** Not locked, but only allow weapons (config-based whitelist?).
+- **Grinder:** No locking.
+
+#### Utility
+- **Redstone Clock:** No inventory
 
 ---
 
 ### 5. Hopper (or Other Injection/Extraction) Interaction
-- **Tree Farm:** Will receive pushed saplings, soil, or shears into the dispenser.
+Except as listed below all blocks accept normal injects and extractions.
+
 - **Siphon:** Only accept empty buckets or empty bottles.
-- **Ender Receiver:** Reject all injections.
 - **Block Breaker:** Only accept tools.
 - **Murder Block:** Only accept weapons.
-- **All other blocks:** Normal injects.
-- **All blocks:** Normal extractions.
+- **Warp/Ender Receiver:** Reject all injections.
+- **Tree Farm:** Will receive pushed saplings, soil, bone meal, or shears into the dispenser.
 
 ---
 
@@ -108,25 +165,74 @@ Row 3: Block, Item, Block
 - Each config includes the default recipe (but allows changing).
 - Each config includes **Display Name** and **Display Lore** override options.
 - **Block Breaker/Murder Block:** Whitelist of allowed implements
-- **Compressor/Decompressor:**
-    - List of recipes, e.g. One block of X ↔ Nine ingots of X.
-    - Directionality (Compress, Decompress, Both)
-- **Tree Farm:**
-    - **Base Random:** Percentage chance to grow per activation (can be set to 100%).
-    - **Bone Meal Bonus:** Additional percentage bonus applied if Bone Meal is present (can also be set to 100%).
-    - Final chance to grow = base + bonus (e.g., 30% base, 25% bonus = 55% total). Exceeding 100% is permitted but has no special impact.
 - **Redstone Clock:** How often to pulse in ticks
+- All transformers will utilize a config similar to below. The trees key will contain one entry for each "recipe". Some more abstraction will happen.
 
+```yaml
+TreeFarm:
+	base_chance: 0.25
+	bonemeal_bonus: 0.50
+	sapling_consumed: true
+
+trees:
+  PaleOak_1x1:
+    sapling: cherry_sapling
+    sapling_count: 1
+    bonemeal: optional
+    soils: [dirt, grass_block]
+    required_enchantments: []
+
+    variants:
+      - name: Pale Oak (Cherry Tree)
+        weight: 100
+        logs_count: { min: 6, max: 10 }
+        logs:
+          cherry_log:
+            weight: 100
+            max: -1
+        leaves_count: { min: 40, max: 70 }
+        leaves:
+          cherry_leaves:
+            weight: 100
+            max: -1
+```
 ---
 
 ### Default Lore Lines
-- **Tree Farm:** *Mother Nature’s best kept secret.*
-- **Compressor:** *Under intense pressure things* **change** *.*
-- **Decompressor:** ***Nothing*** *stays whole forever.*
-- **Siphon:** *Note: Buckets not included.*
-- **Ender Sender:** *A tear in space swallows all around it.*
-- **Ender Receiver:** *Things* *appear from afar.*
-- **Block Breaker:** *A tireless worker.*
-- **Murder Block:** *Sometimes violence* **is** *the answer.*
-- **Redstone Clock:** *You hear soft ticking from inside.*
+#### Actors
+- **Siphon:** Note: Buckets not included.
+- **Block Breaker:** A tireless worker.
+- **Murder Block:** Sometimes violence *is* the answer.
 
+#### Transfers
+- **Ender Sender:** A tear in space swallows all around it.
+- **Ender Receiver:** *Things* appear from afar.
+- **Warp Sender:** Where intent becomes inevitability.
+- **Warp Receiver:** An anchor for impossible arrivals..
+
+#### Transformers
+- **Tree Farm:** Mother Nature’s best kept secret.
+- **Compressor:** Under intense pressure things* *change*,
+- **Decompressor:** *Nothing* stays whole forever.
+- **Grinder:** Crush. Pulverize. Repeat.
+
+#### Utility
+- **Redstone Clock:** You hear soft ticking from inside.
+
+---
+
+### Warp and Ender Sender/Receivers
+
+The premise is to extend item transfer over distances in the same conceptual way that an Ender Chest's contents can be accessed from any location with another Ender Chest. The core implementation needs are: Pairing and a Queue for each Pairing.
+
+#### Pairing
+- Ender blocks can be paired only one Sender to one Receiver.
+- Warp blocks can be paired to multiple Ender blocks of the other type.
+- Pairing is accomplished by use-clicking Sender to a placed Receiver block or vice-versa
+
+#### The Queue
+- Senders inject one item into a queue per Redstone Impulse received
+- Receivers take one item from a queue per Redstone Impulse received (and then emit it)
+- If a queue is empty any single item can be inserted into it.
+- If a queue contains one or more items then more of that item may be inserted up to a full stack (either 64, 16 or 1 as appropriate) for that item.
+- I don't know if a queue should know it's members or members should know their queue or both. Probably both.

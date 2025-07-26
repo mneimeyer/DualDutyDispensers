@@ -1,0 +1,25 @@
+# Ender Receiver Configuration
+name: Ender Receiver
+custom-model-data: 44403
+lore: Things appear from afar.
+
+# Placeholder item configuration
+placeholder:
+  name: Heart of the Void
+  lore: This item creates a small tear in reality and cannot be removed
+
+recipe:
+  # Top Row
+  item0: obsidian
+  item1: ender_eye
+  item2: obsidian
+
+  # Middle Row
+  item3: dropper
+  item4: dispenser
+  item5: dropper
+
+  # Bottom Row
+  item6: obsidian
+  item7: ender_eye
+  item8: obsidian
